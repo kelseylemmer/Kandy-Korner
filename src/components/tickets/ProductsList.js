@@ -6,6 +6,7 @@ import "./Product.css"
 export const ProductsList = () => {
     const [products, setProducts] = useState([])
     const [filteredProducts, setFiltered] = useState([])
+    const [pricey, setPriceyProduct] = useState([])
 
     const localKandyUser = localStorage.getItem("kandy_user")
     const kandyUserObject = JSON.parse(localKandyUser)
@@ -22,32 +23,48 @@ export const ProductsList = () => {
         [] //When this array is empty, you are observing inital componenet state
     );
 
-    useEffect(
-        () => {
-            if (kandyUserObject.staff) {
-                //for employees
-                setFiltered(products)
-            }
-        },
-        [products]
-    );
+
 
     useEffect(() => {
-        const sortedProducts = products.sort((a, b) => {
-            if (a.name < b.name) {
-                return -1;
-            }
-            if (a.name > b.name) {
-                return 1;
-            }
-            return 0;
-        });
-        setFiltered(sortedProducts);
+        if (kandyUserObject.staff) {
+            const sortedProducts = products.sort((a, b) => {
+                if (a.name < b.name) {
+                    return -1;
+                }
+                if (a.name > b.name) {
+                    return 1;
+                }
+                return 0;
+            });
+            setFiltered(sortedProducts);
+            setFiltered(products)
+        }
     },
         [products]
     );
 
+    useEffect(
+        () => {
+            if (pricey) {
+                const priceyProducts = products.filter(product => product.pricePerUnit >= 2)
+                setFiltered(priceyProducts)
+            }
+        },
+        [pricey]
+    )
+
     return <>
+
+        {
+            kandyUserObject.staff
+                ? <>
+                    <button onClick={() => setPriceyProduct(true)}>Top Priced</button>
+
+                </>
+                : <>
+
+                </>
+        }
 
         <h2>Products:</h2>
 
