@@ -1,6 +1,22 @@
+import { Outlet, Route, Routes } from "react-router-dom"
+import { LocationsList } from "../tickets/LocationsList.js"
+
+
 export const ApplicationViews = () => {
-	return <>
+	return (
+		<Routes>
+			<Route path="/" element={
+				<>
+					<h1>Kandy Korner Candy Shop</h1>
+					<div>Yum</div>
 
-	</>
+					<Outlet />
+				</>
+			}>
+
+				<Route path="locations" element={<LocationsList />} />
+
+			</Route>
+		</Routes>
+	)
 }
-
