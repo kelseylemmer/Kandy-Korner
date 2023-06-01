@@ -49,6 +49,9 @@ export const ProductsList = () => {
                 const priceyProducts = products.filter(product => product.pricePerUnit >= 2)
                 setFiltered(priceyProducts)
             }
+            else {
+                setFiltered(products)
+            }
         },
         [pricey]
     )
@@ -59,6 +62,7 @@ export const ProductsList = () => {
             kandyUserObject.staff
                 ? <>
                     <button onClick={() => setPriceyProduct(true)}>Top Priced</button>
+                    <button onClick={() => setPriceyProduct(false)}>All Products</button>
 
                 </>
                 : <>
