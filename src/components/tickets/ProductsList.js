@@ -29,7 +29,7 @@ export const ProductsList = () => {
 
 
   useEffect(() => {
-    if (kandyUserObject.staff) {
+    {
       const sortedProducts = products.sort((a, b) => {
         if (a.name < b.name) {
           return -1;

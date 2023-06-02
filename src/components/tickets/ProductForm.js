@@ -39,18 +39,20 @@ export const ProductForm = () => {
     }
 
     // TODO: Perform the fetch() to POST the object to the API
-    return fetch(`http://localhost:8088/products`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(productToSendToAPI)
-    })
-      .then(response => response.json())
-      .then(() => {
-        navigate("/products")
-
+    if (product.name !== "" && product.price > 0 && product.type > 0) {
+      return fetch(`http://localhost:8088/products`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(productToSendToAPI)
       })
+        .then(response => response.json())
+        .then(() => {
+          navigate("/products")
+
+        })
+    }
   }
 
   useEffect(
@@ -60,7 +62,6 @@ export const ProductForm = () => {
         .then((productsArray) => {
           setProductTypes(productsArray)
         })
-      console.log("Inital state of products") //view the Initial state of locations
     },
     [] //When this array is empty, you are observing inital componenet state
   );
@@ -103,23 +104,11 @@ export const ProductForm = () => {
               }
             }
           >
-            {productTypes.map(item => (
-              <option value={item.id} key={item.id}>{item.type}</option>
+            <option value="0" defaultValue>Select Candy Type</option>
+            {productTypes.map(typeObject => (
+              <option value={typeObject.id} key={typeObject.id}>{typeObject.type}</option>
             ))}
           </select>
-          {/* <input
-          required autoFocus
-          type="text"
-          className="form-control"
-          placeholder="Product Type"
-          value={product.type}
-          onChange={
-            (evt) => {
-              const copy = { ...product }
-              copy.type = evt.target.value
-              update(copy)
-            }
-          } /> */}
         </div>
       </fieldset>
       <fieldset>
@@ -127,7 +116,9 @@ export const ProductForm = () => {
           <label>Price:</label>
           <input
             required autoFocus
-            type="text"
+            type="number"
+            min="0"
+            step=".25"
             className="form-control"
             placeholder="Product Price"
             value={product.price}
